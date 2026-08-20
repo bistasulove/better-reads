@@ -1,0 +1,20 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# "one" (The Great Gatsby) nets +2, "two" (1984) nets -1.
+# Deliberately non-zero and different, so an aggregate query in a later PR
+# can't accidentally pass by returning 0 or by mixing the two books up.
+
+austin_upvotes_gatsby:
+  user: austin
+  book: one
+  value: 1
+
+bri_upvotes_gatsby:
+  user: bri
+  book: one
+  value: 1
+
+austin_downvote_1984:
+  user: austin
+  book: two
+  value: -1

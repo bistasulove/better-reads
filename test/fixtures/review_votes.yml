@@ -1,0 +1,14 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# Review "two" is deliberately left with no votes, so tests that need a clean
+# review to vote on (or to destroy) have one available.
+
+bri_upvotes_review_one:
+  user: bri
+  review: one
+  value: 1
+
+austin_downvotes_review_three:
+  user: austin
+  review: three
+  value: -1
