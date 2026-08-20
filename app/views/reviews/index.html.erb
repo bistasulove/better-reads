@@ -9,6 +9,12 @@
         <p class="text-sm text-gray-500">Rating: <%= review.rating %></p>
         <p class="text-sm text-gray-500">By <%= review.user.name %></p>
         <p class="mt-4"><%= review.content %></p>
+        <div class="mt-4">
+          <%= render "shared/vote_buttons",
+                score: @review_scores[review.id] || 0,
+                my_vote: @my_review_votes[review.id],
+                vote_path: review_vote_path(review) %>
+        </div>
         <% if review.user == current_user %>
           <%= button_to "Delete", review_path(review),
             method: :delete,

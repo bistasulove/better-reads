@@ -4,7 +4,13 @@
   <div class="space-y-4">
     <div class="card">
       <%= render @book %>
-      <%= link_to "Back", books_path, class: "rounded-lg py-3 px-5 bg-gray-200 inline-block font-medium" %>
+      <div class="flex items-center gap-4 mt-4">
+        <%= render "shared/vote_buttons",
+              score: @book.score,
+              my_vote: @book.vote_by(current_user)&.value,
+              vote_path: book_vote_path(@book) %>
+        <%= link_to "Back", books_path, class: "rounded-lg py-3 px-5 bg-gray-200 inline-block font-medium" %>
+      </div>
     </div>
 
     <% unless @reviews.length.positive? %>
@@ -23,6 +29,12 @@
           <p class="text-sm text-gray-500">Rating: <%= review.rating %></p>
           <p class="text-sm text-gray-500">By <%= review.user.name %></p>
           <p class="mt-4"><%= review.content %></p>
+          <div class="mt-4">
+            <%= render "shared/vote_buttons",
+                  score: @review_scores[review.id] || 0,
+                  my_vote: @my_review_votes[review.id],
+                  vote_path: review_vote_path(review) %>
+          </div>
         </div>
       <% end %>
       <div class="card">

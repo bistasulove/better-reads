@@ -4,11 +4,15 @@ class BooksController < ApplicationController
   # GET /books
   def index
     @books = Book.all
+    @book_scores = scores_for(BookVote, :book_id, @books)
+    @my_book_votes = my_votes_for(BookVote, :book_id, @books)
   end
 
   # GET /books/1
   def show
     @reviews = @book.reviews
+    @review_scores = scores_for(ReviewVote, :review_id, @reviews)
+    @my_review_votes = my_votes_for(ReviewVote, :review_id, @reviews)
   end
 
   # GET /books/new
@@ -36,5 +40,17 @@ class BooksController < ApplicationController
   # Only allow a list of trusted parameters through.
   def book_params
     params.require(:book).permit(:title, :author_id, :description)
+  end
+
+  # One query for every score on the page, instead of one per record.
+  # Returns { record_id => score }; records with no votes are absent.
+  def scores_for(vote_class, foreign_key, records)
+    vote_class.where(foreign_key => records).group(foreign_key).sum(:value)
+  end
+
+  # One query for the current user's votes on everything on the page.
+  # Returns { record_id => 1 or -1 }.
+  def my_votes_for(vote_class, foreign_key, records)
+    vote_class.where(user: current_user, foreign_key => records).pluck(foreign_key, :value).to_h
   end
 end

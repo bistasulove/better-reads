@@ -10,8 +10,14 @@
     <% @books.each do |book| %>
       <div class="card">
         <%= render book %>
-        <%= link_to "Read reviews", book, class: "rounded-lg py-3 px-5 bg-green-200 inline-block font-medium" %>
-        <%= link_to "Add your review", new_review_path, class: "rounded-lg py-3 px-5 bg-green-200 inline-block font-medium" %>
+        <div class="flex items-center gap-4 mt-4">
+          <%= render "shared/vote_buttons",
+                score: @book_scores[book.id] || 0,
+                my_vote: @my_book_votes[book.id],
+                vote_path: book_vote_path(book) %>
+          <%= link_to "Read reviews", book, class: "rounded-lg py-3 px-5 bg-green-200 inline-block font-medium" %>
+          <%= link_to "Add your review", new_review_path, class: "rounded-lg py-3 px-5 bg-green-200 inline-block font-medium" %>
+        </div>
       </div>
     <% end %>
   </div>

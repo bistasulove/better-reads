@@ -1,6 +1,8 @@
 class ReviewsController < ApplicationController
   def index
     @reviews = Review.all.limit(20)
+    @review_scores = ReviewVote.where(review: @reviews).group(:review_id).sum(:value)
+    @my_review_votes = ReviewVote.where(user: current_user, review: @reviews).pluck(:review_id, :value).to_h
   end
 
   def new

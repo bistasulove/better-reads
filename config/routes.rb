@@ -4,6 +4,10 @@ Rails.application.routes.draw do
   
   resource :session
   resources :users
-  resources :books
-  resources :reviews
+  resources :books do
+    resource :vote, only: %i[create destroy], controller: "book_votes"
+  end
+  resources :reviews do
+    resource :vote, only: %i[create destroy], controller: "review_votes"
+  end
 end

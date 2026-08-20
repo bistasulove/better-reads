@@ -1,0 +1,39 @@
+<%# locals: (score:, my_vote:, vote_path:) %>
+<%#
+  my_vote is 1, -1, or nil for the current user.
+
+  When an arrow matches the vote you already cast it submits DELETE, so
+  clicking it again undoes your vote. Otherwise it submits POST with the value
+  it represents, which either casts a new vote or flips an existing one.
+%>
+<div class="flex items-center gap-1">
+  <% if my_vote == 1 %>
+    <%= button_to "▲", vote_path,
+          method: :delete,
+          form_class: "inline-block",
+          class: "rounded px-2 py-1 bg-green-700 text-white text-sm font-medium",
+          aria: { label: "Undo upvote" } %>
+  <% else %>
+    <%= button_to "▲", vote_path,
+          params: { value: 1 },
+          form_class: "inline-block",
+          class: "rounded px-2 py-1 bg-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-300",
+          aria: { label: "Upvote" } %>
+  <% end %>
+
+  <span class="px-2 text-sm font-bold tabular-nums"><%= score %></span>
+
+  <% if my_vote == -1 %>
+    <%= button_to "▼", vote_path,
+          method: :delete,
+          form_class: "inline-block",
+          class: "rounded px-2 py-1 bg-red-600 text-white text-sm font-medium",
+          aria: { label: "Undo downvote" } %>
+  <% else %>
+    <%= button_to "▼", vote_path,
+          params: { value: -1 },
+          form_class: "inline-block",
+          class: "rounded px-2 py-1 bg-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-300",
+          aria: { label: "Downvote" } %>
+  <% end %>
+</div>
