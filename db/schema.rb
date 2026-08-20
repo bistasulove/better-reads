@@ -10,12 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_18_000000) do
+ActiveRecord::Schema[7.1].define(version: 2026_08_20_035406) do
   create_table "authors", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_authors_on_name", unique: true
+  end
+
+  create_table "book_votes", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "book_id", null: false
+    t.integer "value", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_book_votes_on_book_id"
+    t.index ["user_id", "book_id"], name: "index_book_votes_on_user_id_and_book_id", unique: true
+    t.check_constraint "value IN (-1, 1)", name: "book_votes_value_check"
   end
 
   create_table "books", force: :cascade do |t|
@@ -25,6 +36,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_18_000000) do
     t.datetime "updated_at", null: false
     t.integer "author_id"
     t.index ["author_id"], name: "index_books_on_author_id"
+  end
+
+  create_table "review_votes", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "review_id", null: false
+    t.integer "value", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["review_id"], name: "index_review_votes_on_review_id"
+    t.index ["user_id", "review_id"], name: "index_review_votes_on_user_id_and_review_id", unique: true
+    t.check_constraint "value IN (-1, 1)", name: "review_votes_value_check"
   end
 
   create_table "reviews", force: :cascade do |t|
@@ -47,7 +69,11 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_18_000000) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "book_votes", "books"
+  add_foreign_key "book_votes", "users"
   add_foreign_key "books", "authors"
+  add_foreign_key "review_votes", "reviews"
+  add_foreign_key "review_votes", "users"
   add_foreign_key "reviews", "books"
   add_foreign_key "reviews", "users"
 end
