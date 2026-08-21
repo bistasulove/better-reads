@@ -40,6 +40,18 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to book_url(@book)
   end
 
+  test "should update description while editing book" do
+    @book = books(:one)
+    patch book_path(@book), params: {
+      book: {
+        description: "This is a new description."
+      }
+    }
+    assert_redirected_to book_path(@book)
+    @book.reload
+    assert_equal "This is a new description.", @book.description
+  end
+  
   test "should destroy book" do
     assert_difference("Book.count", -1) do
       delete book_url(@book)

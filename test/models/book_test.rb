@@ -8,6 +8,12 @@ class BookTest < ActiveSupport::TestCase
   end
 
   test "book removes all linked reviews on destroy" do
-    skip "TODO: need to implement the association cleanup"
+    book = books(:one)
+
+    reviews_count = book.reviews.count
+    
+    assert_difference("Review.count", -reviews_count) do
+      book.destroy
+    end
   end
 end
